@@ -1,12 +1,23 @@
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width" , initial-scale="1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login1.css') }}">
+</head>
+<body>
 <script src="{{ url_for('static', filename='javascript/jquery-3.3.1.min.js') }}"></script>
-<div class="challenge-wrapper">
+<div class="login">
+		<h3>FIRST FLAG: {{flag}}</h3>
 			<form action="" method="post">
                 <input type = "file" name = "file" id="file" accept=".zip"/>
 				<label>Username</label>
 				<input class="form-control" type="text" name="username" id="cuser" placeholder="Username" />
 				<label>Password</label>
 				<input class="form-control" type="password" name="password" id="cpass" placeholder="Password" />
-				<input type="submit" style="margin-top: 12px;" value="Login" class="c_submit form-control btn btn-success" />
+				<input type="submit" style="margin-top: 12px;" value="Upload File" class="c_submit form-control btn btn-success" />
+			</form>
+			<form action="/logout">
+				<button type="submit" class="btn btn-primary btn-block btn-medium">Logout.</button>
 			</form>
 		</div>
 		<div id="cresponse">
@@ -36,3 +47,4 @@
             
             
 		</script>
+	</body>
