@@ -6,12 +6,13 @@
 </head>
 <body>
 <script src="{{ url_for('static', filename='javascript/jquery-3.3.1.min.js') }}"></script>
+<script src="{{ url_for('static', filename='javascript/sha1.js') }}"></script>
 <div class="login">
 		<h3>FIRST FLAG: {{flag}}</h3>
+		<div id="cresponse">
+		</div>
 			<form action="" method="post">
                 <input type = "file" name = "file" id="file" accept=".zip"/>
-				<label>Username</label>
-				<input class="form-control" type="text" name="username" id="cuser" placeholder="Username" />
 				<label>Password</label>
 				<input class="form-control" type="password" name="password" id="cpass" placeholder="Password" />
 				<input type="submit" style="margin-top: 12px;" value="Upload File" class="c_submit form-control btn btn-success" />
@@ -20,15 +21,12 @@
 				<button type="submit" class="btn btn-primary btn-block btn-medium">Logout.</button>
 			</form>
 		</div>
-		<div id="cresponse">
-		</div>
 		<script>
 			// Look's like weak JavaScript auth script :)
 			$(".c_submit").click(function(event) {
 				event.preventDefault()
-				var u = $("#cuser").val();
 				var p = $("#cpass").val();
-				if(u == "admin" && p == String.fromCharCode(74,97,118,97,83,99,114,105,112,116,73,115,83,101,99,117,114,101)) {
+				if($.sha1(p) == "{{hash}}"){
 				    if(document.location.href.indexOf("?p=") == -1) {  
                         $.ajax({
                             url: 'http://localhost:5000/uploader',
@@ -38,13 +36,12 @@
                             cache: false,
                             contentType: false,
                             processData: false
-                        });
+						});
+						document.location="http://localhost:5000/flag?pass="+p;
 				    }
 				} else {
 				    $("#cresponse").html("<div class='alert alert-danger'>Wrong password sorry.</div>");
 				}
             });
-            
-            
 		</script>
 	</body>

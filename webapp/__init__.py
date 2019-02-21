@@ -3,7 +3,7 @@ import os
 import io
 import sqlite3
 import zipfile
-
+import hashlib
 from flask import Flask, render_template, redirect, request, session
 from jinja2 import Template
 from config import settings
@@ -14,6 +14,9 @@ app.debug = True
 app.config.from_object('config.settings')
 DATABASE_PATH=('./database.db')
 FLAG = os.environ.get("FLAG", default='Not Set')
+FLAG2 = os.environ.get("FLAG2", default='Not Set')
+FLAG2PASS=os.environ.get("FLAG2PASS", default='test')
+FLAG2HASH=hashlib.sha1(FLAG2PASS.encode('utf-8')).hexdigest()
 
 def connect_db():
     return sqlite3.connect(DATABASE_PATH)
@@ -26,16 +29,6 @@ def get_user_from_username_and_password(username, password):
     conn.commit()
     conn.close()
     return {'id': row[0], 'username': row[1]} if row is not None else None
-
-def get_user_from_id(uid):
-    conn = connect_db()
-    cur = conn.cursor()
-    cur.execute('SELECT id, username FROM `user` WHERE id=%d' % uid)
-    row = cur.fetchone()
-    conn.commit()
-    conn.close()
-
-    return {'id': row[0], 'username': row[1]}
 
 def unzip(zip_file, extraction_path):
     """
@@ -67,24 +60,27 @@ def unzip(zip_file, extraction_path):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if 'uid' in session:
-        return render_template('uploadlock.html',flag=FLAG)
+        return render_template('uploadlock.html',flag=FLAG,hash=FLAG2HASH)
     return redirect('/login')
 
-@app.route('/uploader', methods = ['GET', 'POST'])
+@app.route('/uploader', methods = ['POST'])
 def upload_file():
    if request.method == 'POST':
       f = request.files['file']
       if('.zip' in f.filename):
-          extract_path=os.path.join(os.path.dirname(os.path.realpath(__file__)), 'uploads')
           save_file=("./uploads/"+f.filename)
           f.save(save_file)
           unzip(save_file,'./uploads')
           print('file uploaded successfully')
       return 'file uploaded successfully'
 
-@app.route('/test', methods = ['GET', 'POST'])
-def test():
-   return render_template('test.html',flag=FLAG)
+@app.route('/flag', methods = ['GET', 'POST'])
+def flag():
+    if 'uid' in session:
+        password=request.args['pass']
+        if(password==FLAG2PASS):
+            return render_template('flag2.html',flag2=FLAG2)
+    return redirect('/')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
