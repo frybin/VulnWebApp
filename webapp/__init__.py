@@ -1,20 +1,16 @@
 # -*- coding: utf-8 -*-
 import os
+import io
 import sqlite3
+import zipfile
 
 from flask import Flask, render_template, redirect, request, session
 from jinja2 import Template
-
+from config import settings
 app = Flask(__name__)
 app.debug = True
 
-
-# Get app config from absolute file path
-if os.path.exists(os.path.join(os.getcwd(), "config.py")):
-    app.config.from_pyfile(os.path.join(os.getcwd(), "config.py"))
-else:
-    app.config.from_pyfile(os.path.join(os.getcwd(), "config.env.py"))
-
+app.config.from_object('config.settings')
 DATABASE_PATH=('./database.db')
 
 def connect_db():
@@ -45,6 +41,33 @@ def render_home_page(uid):
     return render_template('login2.html',user=user)
 
 
+def unzip(zip_file, extraction_path):
+    """
+    code to unzip files
+    """
+    print("[INFO] Unzipping")
+    try:
+        files = []
+        with zipfile.ZipFile(zip_file, "r") as z:
+            for fileinfo in z.infolist():
+                filename = fileinfo.filename
+                dat = z.open(filename, "r")
+                files.append(filename)
+                outfile = os.path.join(extraction_path, filename)
+                if not os.path.exists(os.path.dirname(outfile)):
+                    try:
+                        os.makedirs(os.path.dirname(outfile))
+                    except OSError as exc:  # Guard against race condition
+                        if exc.errno != errno.EEXIST:
+                            print ("\n[WARN] OS Error: Race Condition")
+                if not outfile.endswith("/"):
+                    with io.open(outfile, mode='wb') as f:
+                        f.write(dat.read())
+                dat.close()
+        return files
+    except Exception as e:
+        print ("[ERROR] Unzipping Error" + str(e))
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if 'uid' in session:
@@ -69,9 +92,13 @@ def pretty_print_POST(req):
 @app.route('/uploader', methods = ['GET', 'POST'])
 def upload_file():
    if request.method == 'POST':
-      print(request.files)
       f = request.files['file']
-      f.save(f.filename)
+      if('.zip' in f.filename):
+          extract_path=os.path.join(os.path.dirname(os.path.realpath(__file__)), 'uploads')
+          save_file=("./uploads/"+f.filename)
+          f.save(save_file)
+          unzip(save_file,'./uploads')
+          print('file uploaded successfully')
       return 'file uploaded successfully'
 
 @app.route('/test', methods = ['GET', 'POST'])
