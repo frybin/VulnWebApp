@@ -1,0 +1,25 @@
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width" , initial-scale="1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login1.css') }}">
+</head>
+<body>
+    <div class="login">
+        <h1>Please Login using Second Form of Auth {{ user['username'] }} </h1>
+        <form method="post" action="">
+            <p><input type="text" name="username" value="" placeholder="Username or Email"></p>
+            <p><input type="password" name="password" value="" placeholder="Password"></p>
+            <button type="submit" class="btn btn-primary btn-block btn-large">Let me in.</button>
+        </form>
+        <form action="/logout">
+            <button type="submit" class="btn btn-primary btn-block btn-medium">Logout.</button>
+        </form>
+
+        <form action = "http://localhost:5000/uploader" method = "POST" 
+         enctype = "multipart/form-data">
+         <input type = "file" name = "file" />
+         <input type = "submit"/>
+      </form>
+    </div>
+</body>
