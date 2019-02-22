@@ -4,6 +4,7 @@ services:
   vulnwebapp:
     image: vulnwebapp
     build: .
+    restart: always 
     environment:
       FLAG: ${FLAG}
       FLAG2: ${FLAG2}
