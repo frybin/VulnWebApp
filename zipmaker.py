@@ -1,5 +1,5 @@
 import zipfile
-z_info = zipfile.ZipInfo(r"../__init__.py")
+z_info = zipfile.ZipInfo(r"../test.py")
 z_file = zipfile.ZipFile("./bad.zip", mode="w")
 string=("""import sys
 import os
