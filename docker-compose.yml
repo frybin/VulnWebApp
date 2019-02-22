@@ -8,5 +8,6 @@ services:
       FLAG: ${FLAG}
       FLAG2: ${FLAG2}
       FLAG3: ${FLAG3}
+      FLAG2PASS: ${FLAG2PASS}
     ports:
       - 8080:5000
