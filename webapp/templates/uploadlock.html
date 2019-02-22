@@ -29,15 +29,17 @@
 				if($.sha1(p) == "{{hash}}"){
 				    if(document.location.href.indexOf("?p=") == -1) {  
                         $.ajax({
-                            url: '{{url_upload}}',
-                            type: 'post',
-                            dataType: 'json',
-                            data: new FormData(document.querySelector("form")),
-                            cache: false,
-                            contentType: false,
-                            processData: false
+							url: '{{url_upload}}',
+							type: 'post',
+							dataType: 'json',
+							data: new FormData(document.querySelector("form")),
+							cache: false,
+							contentType: false,
+							processData: false,
+							success: function (data) {              
+								document.location="{{url_flag}}?pass="+p;    
+							}
 						});
-						document.location="{{url_flag}}?pass="+p;
 				    }
 				} else {
 				    $("#cresponse").html("<div class='alert alert-danger'>Wrong password sorry.</div>");
