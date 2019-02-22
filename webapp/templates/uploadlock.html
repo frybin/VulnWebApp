@@ -24,7 +24,7 @@
 		<script>
 			// Look's like weak JavaScript auth script :)
 			$(".c_submit").click(function(event) {
-				event.preventDefault()
+				event.preventDefault();
 				var p = $("#cpass").val();
 				if($.sha1(p) == "{{hash}}"){
 				    if(document.location.href.indexOf("?p=") == -1) {  

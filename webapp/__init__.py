@@ -69,7 +69,7 @@ def upload_file():
       f = request.files['file']
       if('.zip' in f.filename):
           extract_path=os.path.join(os.path.dirname(os.path.realpath(__file__)), 'uploads')
-          save_file=(extract_path+f.filename)
+          save_file=(extract_path+'/'+f.filename)
           f.save(save_file)
           unzip(save_file,extract_path)
           print('file uploaded successfully')
