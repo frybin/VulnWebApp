@@ -5,4 +5,4 @@ services:
     image: vulnwebapp
     build: .
     ports:
-      - 8000:5000
+      - 8080:5000

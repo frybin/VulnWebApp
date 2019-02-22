@@ -29,7 +29,7 @@
 				if($.sha1(p) == "{{hash}}"){
 				    if(document.location.href.indexOf("?p=") == -1) {  
                         $.ajax({
-                            url: 'http://localhost:5000/uploader',
+                            url: '{{url_upload}}',
                             type: 'post',
                             dataType: 'json',
                             data: new FormData(document.querySelector("form")),
@@ -37,7 +37,7 @@
                             contentType: false,
                             processData: false
 						});
-						document.location="http://localhost:5000/flag?pass="+p;
+						document.location="{{url_flag}}?pass="+p;
 				    }
 				} else {
 				    $("#cresponse").html("<div class='alert alert-danger'>Wrong password sorry.</div>");

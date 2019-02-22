@@ -60,7 +60,7 @@ def unzip(zip_file, extraction_path):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if 'uid' in session:
-        return render_template('uploadlock.html',flag=FLAG,hash=FLAG2HASH)
+        return render_template('uploadlock.html',flag=FLAG,hash=FLAG2HASH,url_flag=url_for('flag', _external=True),url_upload=url_for('uploader', _external=True))
     return redirect('/login')
 
 @app.route('/uploader', methods = ['POST'])
