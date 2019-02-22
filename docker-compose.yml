@@ -11,4 +11,4 @@ services:
       FLAG3: ${FLAG3}
       FLAG2PASS: ${FLAG2PASS}
     ports:
-      - 8080:5000
+      - 80:5000
