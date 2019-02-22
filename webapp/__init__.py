@@ -4,7 +4,7 @@ import io
 import sqlite3
 import zipfile
 import hashlib
-from flask import Flask, render_template, redirect, request, session
+from flask import Flask, render_template, redirect, request, session, url_for
 from jinja2 import Template
 from config import settings
 
@@ -60,7 +60,7 @@ def unzip(zip_file, extraction_path):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if 'uid' in session:
-        return render_template('uploadlock.html',flag=FLAG,hash=FLAG2HASH,url_flag=url_for('flag', _external=True),url_upload=url_for('uploader', _external=True))
+        return render_template('uploadlock.html',flag=FLAG,hash=FLAG2HASH,url_flag=url_for('flag', _external=True),url_upload=url_for('upload_file', _external=True))
     return redirect('/login')
 
 @app.route('/uploader', methods = ['POST'])
